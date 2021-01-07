@@ -1,0 +1,38 @@
+{
+    "mqtt": {
+        "clientid": "garage",
+        "host": "hab",
+        "port": 1883
+    },
+    "sensors": [
+        {
+            "sm9514": {
+                "topic": "hab/radon/pressure",
+                "rate": 5,
+                "i2c": {"bus": 1, "addr": 40},
+                "press": {"max": 15.748, "min": -15.748}
+            }
+        },
+        {
+            "garagedoor": {
+                "topic": "hab/door/garage/back",
+                "rate": 60,
+                "gpio": {"top": 5, "bot": 6, "act": 20}
+            }
+        },
+        {
+            "garagedoor": {
+                "topic": "hab/door/garage/front",
+                "rate": 60,
+                "gpio": {"top": 13, "bot": 19, "act": 21}
+            }
+        },
+        {
+            "w1therm": {
+                "topic": "hab/temperature/garage",
+                "rate": 10,
+                "sensor": { "id": "00000a45a380", "offset": -5.5}
+            }
+        }
+    ]
+}
