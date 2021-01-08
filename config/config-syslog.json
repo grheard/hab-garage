@@ -1,0 +1,70 @@
+{
+    "mqtt": {
+        "clientid": "garage",
+        "host": "hab",
+        "port": 1883
+    },
+    "logger": {
+        "version": 1,
+        "disable_existing_loggers": "True",
+        "root": {
+            "level": "DEBUG",
+            "handlers": ["syslog","file"]
+        },
+        "formatters": {
+            "long": {
+                "format": "%(asctime)s  %(levelname)-8s  %(module)-20s  %(funcName)-20s  %(message)s"
+            },
+            "sys": {
+                "format": "%(levelname)-8s  %(module)-20s  %(funcName)-20s  %(message)s"
+            }
+        },
+        "handlers": {
+            "syslog": {
+                "class": "logging.handlers.SysLogHandler",
+                "level": "WARNING",
+                "address": "/dev/log",
+                "formatter": "sys"
+            },
+            "file": {
+                "level": "DEBUG",
+                "class": "logging.handlers.TimedRotatingFileHandler",
+                "formatter": "long",
+                "backupCount": 30,
+                "when": "midnight",
+                "filename": "logs/garage"
+            }
+        }
+    },
+    "sensors": [
+        {
+            "sm9514": {
+                "topic": "hab/radon/pressure",
+                "rate": 5,
+                "i2c": {"bus": 1, "addr": 40},
+                "press": {"max": 15.748, "min": -15.748}
+            }
+        },
+        {
+            "garagedoor": {
+                "topic": "hab/door/garage/back",
+                "rate": 60,
+                "gpio": {"top": 5, "bot": 6, "act": 20}
+            }
+        },
+        {
+            "garagedoor": {
+                "topic": "hab/door/garage/front",
+                "rate": 60,
+                "gpio": {"top": 13, "bot": 19, "act": 21}
+            }
+        },
+        {
+            "w1therm": {
+                "topic": "hab/temperature/garage",
+                "rate": 10,
+                "sensor": { "id": "00000a45a380", "offset": -5.5}
+            }
+        }
+    ]
+}
