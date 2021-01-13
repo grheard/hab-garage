@@ -1,6 +1,7 @@
 import argparse
 import json
 import os
+import signal
 import sys
 import time
 import threading
@@ -157,3 +158,27 @@ class Main():
         else:
             item["instance"] = instance
             instance.start()
+
+
+def __signal_handler(signal, frame):
+    try:
+        logger.info(f"Caught signal {signal}")
+        gmain.stop()
+    except:
+        sys.exit(0)
+
+
+def main():
+    global gmain
+
+    logger.info("Setting up.")
+
+    signal.signal(signal.SIGINT, __signal_handler)
+
+    gmain = Main()
+
+    logger.info("Start.")
+
+    gmain.start()
+
+    logger.info("End.")
